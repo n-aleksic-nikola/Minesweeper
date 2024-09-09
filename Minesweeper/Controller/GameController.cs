@@ -56,7 +56,7 @@ namespace Minesweeper.Controller
             }
         }
 
-        public void ExecuteCommand(ICommand command)
+        public virtual void ExecuteCommand(ICommand command)
         {
             if (gameWon)
             {
@@ -97,7 +97,7 @@ namespace Minesweeper.Controller
             DisplayStats();
         }
 
-        public bool IsGameWon()
+        public virtual bool IsGameWon()
         {
             return gameWon;
         }
