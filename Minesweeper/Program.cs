@@ -1,7 +1,6 @@
 ﻿using Minesweeper.Command;
 using Minesweeper.Controller;
 using Minesweeper.Model;
-using Minesweeper.View;
 
 do
 {
@@ -14,11 +13,10 @@ static void StartGame()
 {
     Board board = new(10, 10);
     board.PlaceMines();
-    ConsoleView view = new();
 
     int startRow = GetValidStartRow();
 
-    GameController controller = new(board, view, startRow);
+    GameController controller = new(board, startRow);
 
     while (!controller.IsGameWon())
     {

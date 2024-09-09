@@ -7,7 +7,6 @@ namespace Minesweeper.Controller
     public class GameController
     {
         private readonly Board _board;
-        private readonly ConsoleView _view;
         private int currentX;
         private int currentY;
         private int score = 1;
@@ -16,11 +15,9 @@ namespace Minesweeper.Controller
 
         public GameController(
             Board board,
-            ConsoleView view,
             int startX)
         {
             _board = board;
-            _view = view;
 
             currentX = startX;
             currentY = 0;
@@ -38,19 +35,22 @@ namespace Minesweeper.Controller
                 currentX = newX;
                 currentY = newY;
 
-                score++;
-
                 var hitMine = _board.RevealCell(currentX, currentY);
-                if (hitMine == true && hitMine != null)
+                if (hitMine != null)
                 {
-                    lives--;
-                    Console.WriteLine("Oops! You hit a mine.");
+                    score++;
 
-                    if (lives <= 0)
+                    if (hitMine == true)
                     {
-                        gameWon = true;
-                        Console.WriteLine("Game over!");
-                        return;
+                        lives--;
+                        Console.WriteLine("Oops! You hit a mine.");
+
+                        if (lives <= 0)
+                        {
+                            gameWon = true;
+                            Console.WriteLine("Game over!");
+                            return;
+                        }
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace Minesweeper.Controller
 
             Console.WriteLine($"Current position: row {currentX} column {currentY}");
 
-            _view.DisplayBoard(_board);
+            ConsoleView.DisplayBoard(_board);
         }
 
         private void RevealAndDisplayInitialCell()

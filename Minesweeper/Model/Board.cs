@@ -21,7 +21,7 @@
             {
                 return Cells[x, y];
             }
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException($"Cell at ({x},{y}) is out of bounds.");
         }
 
         public void PlaceMines()

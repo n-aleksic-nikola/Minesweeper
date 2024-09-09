@@ -4,7 +4,7 @@ namespace Minesweeper.View
 {
     public class ConsoleView
     {
-        public void DisplayBoard(Board board)
+        public static void DisplayBoard(Board board)
         {
             for (int x = 0; x < board.Width; x++)
             {
