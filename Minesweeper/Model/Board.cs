@@ -33,5 +33,17 @@
                 }
             }
         }
+
+        public bool RevealCell(int x, int y)
+        {
+            Cells[x, y].IsRevealed = true;
+
+            if (Cells[x, y].IsMine)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }
