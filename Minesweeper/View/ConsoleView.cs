@@ -10,8 +10,24 @@ namespace Minesweeper.View
             {
                 for (int y = 0; y < board.Height; y++)
                 {
-                    Console.Write("# ");
+                    var cell = board.GetCell(x, y);
+                    if (cell.IsRevealed)
+                    {
+                        if (cell.IsMine)
+                        {
+                            Console.Write("* ");
+                        }
+                        else
+                        {
+                            Console.Write(". ");
+                        }
+                    }
+                    else
+                    {
+                        Console.Write("# ");
+                    }
                 }
+                Console.WriteLine();
             }
         }
     }
