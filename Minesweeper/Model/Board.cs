@@ -43,8 +43,10 @@
             }
         }
 
-        public bool RevealCell(int x, int y)
+        public bool? RevealCell(int x, int y)
         {
+            if (Cells[x, y].IsRevealed) return null;
+
             Cells[x, y].IsRevealed = true;
 
             if (Cells[x, y].IsMine)

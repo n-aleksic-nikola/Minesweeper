@@ -28,7 +28,7 @@ namespace Minesweeper.Controller
             RevealAndDisplayInitialCell();
         }
 
-        public void MoveCursor(int dx, int dy)
+        public virtual void MoveCursor(int dx, int dy)
         {
             int newX = currentX + dx;
             int newY = currentY + dy;
@@ -40,20 +40,17 @@ namespace Minesweeper.Controller
 
                 score++;
 
-                bool hitMine = _board.RevealCell(currentX, currentY);
-                if (hitMine)
+                var hitMine = _board.RevealCell(currentX, currentY);
+                if (hitMine == true && hitMine != null)
                 {
-                    if (hitMine == true)
-                    {
-                        lives--;
-                        Console.WriteLine("Oops! You hit a mine.");
+                    lives--;
+                    Console.WriteLine("Oops! You hit a mine.");
 
-                        if (lives <= 0)
-                        {
-                            gameWon = true;
-                            Console.WriteLine("Game over!");
-                            return;
-                        }
+                    if (lives <= 0)
+                    {
+                        gameWon = true;
+                        Console.WriteLine("Game over!");
+                        return;
                     }
                 }
             }
@@ -89,9 +86,9 @@ namespace Minesweeper.Controller
 
         private void RevealAndDisplayInitialCell()
         {
-            bool hitMine = _board.RevealCell(currentX, currentY);
+            var hitMine = _board.RevealCell(currentX, currentY);
 
-            if (hitMine)
+            if (hitMine == true)
             {
                 lives--;
                 Console.WriteLine("Oops! You hit a mine.");
