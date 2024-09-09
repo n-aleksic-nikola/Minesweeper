@@ -4,6 +4,7 @@ using Minesweeper.Model;
 using Minesweeper.View;
 
 Board board = new(10, 10);
+board.PlaceMines();
 ConsoleView view = new();
 
 Console.Write("Enter the starting row (0 to 9): ");

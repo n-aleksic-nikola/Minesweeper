@@ -5,6 +5,7 @@
         public Cell[,] Cells;
         public int Width { get; set; }
         public int Height { get; set; }
+        private readonly Random _random = new();
 
         public Board(int width, int height)
         {
@@ -23,14 +24,22 @@
             throw new ArgumentOutOfRangeException();
         }
 
-        private void InitializeCells()
+        public void PlaceMines()
         {
-            for (int x = 0; x < Width; x++)
+            int totalCells = Width * Height;
+            int mineCount = (int)(totalCells * 0.20);
+
+            for (int i = 0; i < mineCount; i++)
             {
-                for (int y = 0; y < Height; y++)
+                int x, y;
+                do
                 {
-                    Cells[x, y] = new Cell();
+                    x = _random.Next(Width);
+                    y = _random.Next(Height);
                 }
+                while (Cells[x, y].IsMine);
+
+                Cells[x, y].IsMine = true;
             }
         }
 
@@ -44,6 +53,17 @@
             }
 
             return false;
+        }
+
+        private void InitializeCells()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    Cells[x, y] = new Cell();
+                }
+            }
         }
     }
 }
