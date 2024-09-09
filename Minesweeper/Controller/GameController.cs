@@ -10,6 +10,9 @@ namespace Minesweeper.Controller
         private readonly ConsoleView _view;
         private int currentX;
         private int currentY;
+        private int score = 1;
+        private int lives = 3;
+        private bool gameWon = false;
 
         public GameController(
             Board board,
@@ -35,22 +38,71 @@ namespace Minesweeper.Controller
                 currentX = newX;
                 currentY = newY;
 
-                var hitMine = _board.RevealCell(currentX, currentY);
-                if (hitMine == true)
+                score++;
+
+                bool hitMine = _board.RevealCell(currentX, currentY);
+                if (hitMine)
                 {
-                    Console.WriteLine("Oops! You hit a mine.");
+                    if (hitMine == true)
+                    {
+                        lives--;
+                        Console.WriteLine("Oops! You hit a mine.");
+
+                        if (lives <= 0)
+                        {
+                            gameWon = true;
+                            Console.WriteLine("Game over!");
+                            return;
+                        }
+                    }
                 }
             }
         }
 
         public void ExecuteCommand(ICommand command)
         {
+            if (gameWon)
+            {
+                Console.WriteLine("You've already won the game!");
+                return;
+            }
+
             command.Execute(this);
+
+            if (currentY == _board.Width - 1)
+            {
+                gameWon = true;
+                Console.WriteLine("Congratulations! You've won the game by reaching the right end of the board.");
+            }
+
+            DisplayStats();
+        }
+
+        private void DisplayStats()
+        {
+            Console.WriteLine($"Score: {score} | Lives left: {lives}");
+
+            Console.WriteLine($"Current position: row {currentX} column {currentY}");
+
+            _view.DisplayBoard(_board);
         }
 
         private void RevealAndDisplayInitialCell()
         {
-            _board.RevealCell(currentX, currentY);
+            bool hitMine = _board.RevealCell(currentX, currentY);
+
+            if (hitMine)
+            {
+                lives--;
+                Console.WriteLine("Oops! You hit a mine.");
+            }
+
+            DisplayStats();
+        }
+
+        public bool IsGameWon()
+        {
+            return gameWon;
         }
     }
 }
