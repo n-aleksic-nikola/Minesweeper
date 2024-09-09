@@ -3,41 +3,74 @@ using Minesweeper.Controller;
 using Minesweeper.Model;
 using Minesweeper.View;
 
-Console.Write("Enter the starting row (0 to 9): ");
-int startRow;
-int.TryParse(Console.ReadLine(), out startRow);
-
-Board board = new(10, 10);
-board.PlaceMines();
-ConsoleView view = new();
-
-GameController controller = new(board, view, startRow);
-
-while (!controller.IsGameWon())
+do
 {
-    ConsoleKey key = Console.ReadKey(true).Key;
-    ICommand? command = null;
+    Console.Clear();
+    StartGame();
+}
+while (AskToStartNewGame());
 
-    switch (key)
+static void StartGame()
+{
+    Board board = new(10, 10);
+    board.PlaceMines();
+    ConsoleView view = new();
+
+    int startRow = GetValidStartRow();
+
+    GameController controller = new(board, view, startRow);
+
+    while (!controller.IsGameWon())
     {
-        case ConsoleKey.UpArrow:
-            command = new MoveUpCommand();
-            break;
-        case ConsoleKey.DownArrow:
-            command = new MoveDownCommand();
-            break;
-        case ConsoleKey.LeftArrow:
-            command = new MoveLeftCommand();
-            break;
-        case ConsoleKey.RightArrow:
-            command = new MoveRightCommand();
-            break;
+        ConsoleKey key = Console.ReadKey(true).Key;
+        ICommand? command = null;
+
+        switch (key)
+        {
+            case ConsoleKey.UpArrow:
+                command = new MoveUpCommand();
+                break;
+            case ConsoleKey.DownArrow:
+                command = new MoveDownCommand();
+                break;
+            case ConsoleKey.LeftArrow:
+                command = new MoveLeftCommand();
+                break;
+            case ConsoleKey.RightArrow:
+                command = new MoveRightCommand();
+                break;
+        }
+
+        if (command != null)
+        {
+            controller.ExecuteCommand(command);
+        }
     }
 
-    if (command != null)
+    static int GetValidStartRow()
     {
-        controller.ExecuteCommand(command);
+        int startRow;
+        Console.Write("Enter the starting row (0 to 9): ");
+
+        while (!int.TryParse(Console.ReadLine(), out startRow) || startRow < 0 || startRow > 9)
+        {
+            Console.WriteLine("Invalid input. Please enter a number between 0 and 9.");
+            Console.Write("Enter the starting row (0 to 9): ");
+        }
+
+        return startRow;
     }
 }
 
-Console.ReadKey();
+static bool AskToStartNewGame()
+{
+    Console.Write("Do you want to start a new game? (y/n): ");
+    string? response = Console.ReadLine()?.Trim().ToLower();
+
+    if (string.IsNullOrEmpty(response))
+    {
+        return false;
+    }
+
+    return response == "y" || response == "yes";
+}

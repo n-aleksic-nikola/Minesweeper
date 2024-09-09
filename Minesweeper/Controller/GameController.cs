@@ -80,7 +80,7 @@ namespace Minesweeper.Controller
 
         private void DisplayStats()
         {
-            Console.WriteLine($"Score: {score} | Lives left: {lives}");
+            Console.WriteLine($"\nScore: {score} | Lives left: {lives}");
 
             Console.WriteLine($"Current position: row {currentX} column {currentY}");
 

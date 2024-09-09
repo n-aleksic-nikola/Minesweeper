@@ -27,7 +27,7 @@
         public void PlaceMines()
         {
             int totalCells = Width * Height;
-            int mineCount = (int)(totalCells * 0.20);
+            int mineCount = (int)(totalCells * 0.30);
 
             for (int i = 0; i < mineCount; i++)
             {
